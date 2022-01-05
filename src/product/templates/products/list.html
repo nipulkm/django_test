@@ -18,7 +18,15 @@
             <div class="col-md-2">
                 <select name="variant" id="" class="form-control">
                     <option selected disabled>--Select A Variant--</option>
-
+                        {% for variant in variants%}
+                        <optgroup label="{{variant.title}}">
+                            {% for product_variant in product_variants %}
+                                {% if product_variant == variant %}
+                                    <option value="{{product_variant.id}}">{{product_variant.variant_title}}</option>
+                                {% endif %}
+                            {% endfor %}
+                          </optgroup>
+                        {% endfor %}
                 </select>
             </div>
 
@@ -55,32 +63,37 @@
                 </thead>
 
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>T-Shirt <br> Created at : 25-Aug-2020</td>
-                    <td>Quality product in low cost</td>
-                    <td>
-                        <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant">
-
-                            <dt class="col-sm-3 pb-0">
-                                SM/ Red/ V-Nick
-                            </dt>
-                            <dd class="col-sm-9">
-                                <dl class="row mb-0">
-                                    <dt class="col-sm-4 pb-0">Price : 200.0</dt>
-                                    <dd class="col-sm-8 pb-0">InStock : 50.</dd>
+                    {% for  product in products%}
+                        <tr>
+                            <td>{{product.id}}</td>
+                            <td>{{product.title}}<br> Created at : 25-Aug-2020</td>
+                            <td>{{product.description}}</td>
+                            <td>
+                                {% for  product_variant_price in product_variant_prices %}
+                                <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant">
+                                    {% if product_variant_price.product == product %}
+                                    <dt class="col-sm-3 pb-0">
+                                        {{product_variant_price.product_variant_one}}/ {{product_variant_price.product_variant_two}}/ {{product_variant_price.product_variant_three}}
+                                    </dt>
+                                    <dd class="col-sm-9">
+                                        <dl class="row mb-0">
+                                            <dt class="col-sm-4 pb-0">{{product_variant_price.price}}</dt>
+                                            <dd class="col-sm-8 pb-0">{{product_variant_price.stock}}</dd>
+                                        </dl>
+                                    </dd>
+                                    {% endif %}
                                 </dl>
-                            </dd>
-                        </dl>
-                        <button onclick="$('#variant').toggleClass('h-auto')" class="btn btn-sm btn-link">Show more
-                        </button>
-                    </td>
-                    <td>
-                        <div class="btn-group btn-group-sm">
-                            <a href="" class="btn btn-success">Edit</a>
-                        </div>
-                    </td>
-                </tr>
+                                {% endfor %}
+                                <button onclick="$('#variant').toggleClass('h-auto')" class="btn btn-sm btn-link">Show more
+                                </button>
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <a href="" class="btn btn-success">Edit</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
 
             </table>
