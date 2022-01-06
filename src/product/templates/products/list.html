@@ -21,11 +21,11 @@
                         {% for variant in variants%}
                         <optgroup label="{{variant.title}}">
                             {% for product_variant in product_variants %}
-                                {% if product_variant == variant %}
+                                {% if product_variant.variant == variant %}
                                     <option value="{{product_variant.id}}">{{product_variant.variant_title}}</option>
                                 {% endif %}
                             {% endfor %}
-                          </optgroup>
+                        </optgroup>
                         {% endfor %}
                 </select>
             </div>
@@ -63,26 +63,28 @@
                 </thead>
 
                 <tbody>
-                    {% for  product in products%}
+                    {% for product in products %}
                         <tr>
                             <td>{{product.id}}</td>
                             <td>{{product.title}}<br> Created at : 25-Aug-2020</td>
                             <td>{{product.description}}</td>
                             <td>
                                 {% for  product_variant_price in product_variant_prices %}
-                                <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant">
                                     {% if product_variant_price.product == product %}
-                                    <dt class="col-sm-3 pb-0">
-                                        {{product_variant_price.product_variant_one}}/ {{product_variant_price.product_variant_two}}/ {{product_variant_price.product_variant_three}}
-                                    </dt>
-                                    <dd class="col-sm-9">
-                                        <dl class="row mb-0">
-                                            <dt class="col-sm-4 pb-0">{{product_variant_price.price}}</dt>
-                                            <dd class="col-sm-8 pb-0">{{product_variant_price.stock}}</dd>
+                                        <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant">
+                                            <dt class="col-sm-3 pb-0">
+                                                {{product_variant_price.product_variant_one.variant_title}}/ 
+                                                {{product_variant_price.product_variant_two.variant_title}}/ 
+                                                {{product_variant_price.product_variant_three.variant_title}}
+                                            </dt>
+                                            <dd class="col-sm-9">
+                                                <dl class="row mb-0">
+                                                    <dt class="col-sm-4 pb-0">{{product_variant_price.price}}</dt>
+                                                    <dd class="col-sm-8 pb-0">{{product_variant_price.stock}}</dd>
+                                                </dl>
+                                            </dd>
                                         </dl>
-                                    </dd>
                                     {% endif %}
-                                </dl>
                                 {% endfor %}
                                 <button onclick="$('#variant').toggleClass('h-auto')" class="btn btn-sm btn-link">Show more
                                 </button>
@@ -104,10 +106,14 @@
     <div class="card-footer">
         <div class="row justify-content-between">
             <div class="col-md-6">
-                <p>Showing 1 to 10 out of 100</p>
+                <p>Showing {{product_from}} to {{product_to}} out of {{total_product}}</p>
             </div>
             <div class="col-md-2">
-
+                <a href="/product/list/page{{previous_page}}/"><</a>
+                {% for page_number in pagination %}
+                    <a href="/product/list/page{{page_number}}/">{{page_number}}</a>
+                {% endfor %}
+                <a href="/product/list/page{{next_page}}/">></a>
             </div>
         </div>
     </div>
