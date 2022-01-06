@@ -87,6 +87,4 @@ class ProductFilterView(generic.TemplateView):
         context['previous_page'] = page_number - 1
         context['next_page'] = page_number + 1 if page_number + 1 <= pagination else 0
         context['pagination_type'] = 'filtered_product_view'
-
-        print(context)
         return context
