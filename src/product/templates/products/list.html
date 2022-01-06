@@ -10,7 +10,7 @@
 
 
 <div class="card">
-    <form action="" method="get" class="card-header">
+    <form action="/product/list/filter/" method="get" class="card-header">
         <div class="form-row justify-content-between">
             <div class="col-md-2">
                 <input type="text" name="title" placeholder="Product Title" class="form-control">
@@ -97,7 +97,6 @@
                         </tr>
                     {% endfor %}
                 </tbody>
-
             </table>
         </div>
 
@@ -109,11 +108,27 @@
                 <p>Showing {{product_from}} to {{product_to}} out of {{total_product}}</p>
             </div>
             <div class="col-md-2">
-                <a href="/product/list/page{{previous_page}}/"><</a>
-                {% for page_number in pagination %}
-                    <a href="/product/list/page{{page_number}}/">{{page_number}}</a>
-                {% endfor %}
-                <a href="/product/list/page{{next_page}}/">></a>
+                {% if pagination_type == 'all_product_view' %}
+                    {% if previous_page %}
+                        <a href="/product/list/page{{previous_page}}/"><</a>
+                    {% endif %}
+                    {% for page_number in pagination %}
+                        <a href="/product/list/page{{page_number}}/">{{page_number}}</a>
+                    {% endfor %}
+                    {% if next_page %}
+                        <a href="/product/list/page{{next_page}}/">></a>
+                    {% endif %}
+                {% elif pagination_type == 'filtered_product_view' %}
+                    {% if previous_page %}
+                        <a href="/product/list/filter/{{title|default_if_none:'-'}}/{{price_from|default_if_none:0}}/{{price_to|default_if_none:0}}/{{date|default_if_none:'-'}}/{{previous_page}}/"><</a>
+                    {% endif %}
+                    {% for page_number in pagination %}
+                        <a href="/product/list/filter/{{title|default_if_none:'-'}}/{{price_from|default_if_none:0}}/{{price_to|default_if_none:0}}/{{date|default_if_none:'-'}}/{{page_number}}/">{{page_number}}</a>
+                    {% endfor %}
+                    {% if next_page %}
+                    <a href="/product/list/filter/{{title|default_if_none:'-'}}/{{price_from|default_if_none:0}}/{{price_to|default_if_none:0}}/{{date|default_if_none:'-'}}/{{next_page}}/">></a>
+                    {% endif %}        
+                {% endif %}
             </div>
         </div>
     </div>
